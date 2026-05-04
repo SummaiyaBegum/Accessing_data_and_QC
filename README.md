@@ -43,9 +43,8 @@ The goal is to assess sequencing quality, identify issues, perform trimming, and
 ---
 
 ## 📁 Repository Structure
-qc/ → FastQC reports
-reports/ → fastp and MultiQC outputs
-
+- qc/ → FastQC reports
+- reports/ → fastp and MultiQC outputs
 
 ---
 
