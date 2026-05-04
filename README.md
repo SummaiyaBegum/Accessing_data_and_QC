@@ -1,23 +1,45 @@
-## FastQC & fastp workflow
-# 🧬 Quality Control of Bacterial Whole-Genome Sequencing Data
+# 🧬 Illumina NGS Quality Control Workflow
 
-### 📌 Overview
-This repository documents a reproducible quality control (QC) workflow for bacterial whole-genome sequencing (WGS) data using FastQC and fastp. The aim is to assess raw Illumina paired-end sequencing reads, identify sequencing artifacts, apply evidence-based trimming, and validate improvements before downstream analysis.
+## 📌 Overview
+This project demonstrates a reproducible workflow for quality control and preprocessing of Illumina paired-end sequencing data using FastQC, fastp, and MultiQC.
 
-All analyses were performed using publicly available sequencing data, making this workflow suitable for reproducible learning and demonstration.
-
----
-
-### 🧪 Dataset
-- **Organism:** *Pseudomonas aeruginosa*
-- **Sequencing type:** Illumina paired-end WGS
-- **Data source:** European Nucleotide Archive (ENA)
-- **Run accession:** ERR5386380
+The goal is to assess sequencing quality, identify issues, perform trimming, and validate improvements before downstream analysis.
 
 ---
 
-### 🖥️ Computing Environment
-- Windows Subsystem for Linux (WSL)
-- Ubuntu Linux
-- Command-line based workflow
+## 🧪 Dataset
+- Organism: *Pseudomonas aeruginosa*
+- Source: European Nucleotide Archive (ENA)
+- Accession: ERR5386380
+- Sequencing: Illumina paired-end
 
+---
+
+## 🔄 Workflow
+
+1. Download raw FASTQ files from ENA  
+2. Perform initial QC using FastQC  
+3. Trim low-quality reads using fastp  
+4. Re-run FastQC on trimmed reads  
+5. Summarize results using MultiQC  
+
+---
+
+## 📊 Key Observations
+
+- Read 2 showed lower quality compared to Read 1
+- Trimming improved overall base quality
+- Minimal reads removed (~1%)
+- GC content consistent with *P. aeruginosa*
+
+---
+
+## 🧰 Tools Used
+
+- FastQC v0.11.9
+- fastp v0.20.1
+- MultiQC v1.x
+
+---
+
+## 📁 Repository Structure
