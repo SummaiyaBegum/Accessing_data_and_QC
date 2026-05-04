@@ -1,4 +1,4 @@
-# 🧬 Illumina NGS Quality Control Workflow
+# 🧬 NGS Quality Control
 
 ## 📌 Overview
 This project demonstrates a reproducible workflow for quality control and preprocessing of Illumina paired-end sequencing data using FastQC, fastp, and MultiQC.
