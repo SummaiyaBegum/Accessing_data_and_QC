@@ -2,172 +2,182 @@
 
 ## 📌 Objective
 
-To perform quality assessment and preprocessing of Illumina paired-end sequencing data using command-line bioinformatics tools in a reproducible manner.
+Perform quality assessment and preprocessing of Illumina paired-end sequencing data in a reproducible Linux (Ubuntu) environment.
 
 ---
 
-## 🖥️ Environment Setup
+## 🖥️ Working Environment
 
-### Install Required Tools
+All commands are executed in **Ubuntu (WSL)** because bioinformatics tools are designed for Linux systems and work reliably with large sequencing datasets.
+
+Basic commands used:
+
+* `pwd` → shows current directory
+* `ls` → lists files
+* `mkdir` → creates folders
+* `cd` → moves between folders
+* `wget` → downloads data
+
+---
+
+## ⚙️ Tool Installation
 
 ```bash
 sudo apt update
 sudo apt install fastqc fastp multiqc -y
 ```
 
-**Explanation:**
-Updates package lists and installs the required bioinformatics tools:
-
-* FastQC → quality assessment
-* fastp → trimming and filtering
-* MultiQC → summarizing reports
+`sudo` runs commands with administrative privileges.
+`apt update` refreshes the package list so the system knows the latest available software versions.
+`apt install` installs FastQC, fastp, and MultiQC.
+`-y` automatically confirms installation.
 
 ---
 
-### Verify Installation
+## 📁 Create Working Directory
 
 ```bash
-fastqc --version
-fastp --version
-multiqc --version
+mkdir qc
+cd qc
+pwd
+ls
 ```
 
-**Explanation:**
-Confirms that each tool is installed correctly and accessible in the system.
+A dedicated folder is created and entered to keep all analysis files organized.
+`pwd` confirms the current location and `ls` verifies contents.
 
 ---
 
-## 📁 Step 1: Create Working Directory
-
-```bash
-mkdir cp2
-cd cp2
-```
-
-**Explanation:**
-Creates a dedicated folder (`cp2`) to organize all files related to this analysis.
-
----
-
-## ⬇️ Step 2: Download Raw Sequencing Data
+## ⬇️ Download Raw Data
 
 ```bash
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR538/000/ERR5386380/ERR5386380_1.fastq.gz
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR538/000/ERR5386380/ERR5386380_2.fastq.gz
+ls
 ```
 
-**Explanation:**
-Downloads paired-end sequencing reads from the European Nucleotide Archive (ENA):
-
-* `_1` → forward reads
-* `_2` → reverse reads
+Paired-end sequencing reads are downloaded from ENA.
+`_1` represents forward reads and `_2` represents reverse reads.
+`ls` confirms successful download.
 
 ---
 
-## 🔍 Step 3: Initial Quality Assessment (FastQC)
+## 🔍 Initial Quality Check
 
 ```bash
 fastqc ERR5386380_1.fastq.gz ERR5386380_2.fastq.gz
 ```
 
-**Explanation:**
-Evaluates raw sequencing quality:
-
-* per-base quality scores
-* GC content
-* adapter contamination
-* sequence duplication
+FastQC analyzes raw reads for base quality, GC content, duplication levels, and potential adapter contamination.
 
 ---
 
-## 📊 Step 4: View FastQC Reports
+## 📊 View Reports
 
 ```bash
 explorer.exe .
 ```
 
-**Explanation:**
-Opens the current directory in Windows Explorer (WSL environment) to view `.html` reports in a browser.
+Opens the current directory to access HTML reports in a browser.
 
 ---
 
-## ✂️ Step 5: Trimming and Filtering (fastp)
+## ✂️ Trimming and Filtering
 
 ```bash
-fastp \
---in1 ERR5386380_1.fastq.gz \
---in2 ERR5386380_2.fastq.gz \
---out1 ERR5386380_1.trimmed.fastq.gz \
---out2 ERR5386380_2.trimmed.fastq.gz \
---cut_front \
---cut_tail \
---cut_mean_quality 25 \
---length_required 40 \
---html fastp.html \
---json fastp.json
+fastp --in1 ERR5386380_1.fastq.gz --in2 ERR5386380_2.fastq.gz --out1 ERR5386380_1.trimmed.fastq.gz --out2 ERR5386380_2.trimmed.fastq.gz --cut_front --cut_tail --cut_mean_quality 25 --length_required 40 --html fastp.html --json fastp.json
 ```
+## 🔧 fastp Command Breakdown
+* `fastp`
+  Runs the trimming and quality filtering tool.
 
-**Explanation:**
-Performs read cleaning:
+* `--in1 ERR5386380_1.fastq.gz`
+  Input file for forward reads (Read 1).
 
-* removes low-quality bases from both ends
-* filters reads below quality threshold (Q25)
-* discards reads shorter than 40 bp
-* generates QC reports (`fastp.html`, `fastp.json`)
+* `--in2 ERR5386380_2.fastq.gz`
+  Input file for reverse reads (Read 2).
+  These two files are paired-end reads from the same DNA fragments.
+
+* `--out1 ERR5386380_1.trimmed.fastq.gz`
+  Output file for cleaned forward reads.
+
+* `--out2 ERR5386380_2.trimmed.fastq.gz`
+  Output file for cleaned reverse reads.
+  These trimmed files will be used for alignment.
+
+* `--cut_front`
+  Removes low-quality bases from the beginning of each read.
+
+* `--cut_tail`
+  Removes low-quality bases from the end of each read.
+  Sequencing quality is usually lower at the ends, so trimming improves accuracy.
+
+* `--cut_mean_quality 25`
+  Trims regions where average quality drops below Q25.
+  Q25 means high-confidence bases (~99.7% accuracy).
+
+* `--length_required 40`
+  Removes reads shorter than 40 bases after trimming.
+  Very short reads are unreliable and may map incorrectly.
+
+* `--html fastp.html`
+  Creates a visual report showing quality before and after trimming.
+
+* `--json fastp.json`
+  Creates a structured report for further analysis or pipeline use.
 
 ---
 
-## 🔍 Step 6: Quality Check After Trimming
+### 🧠 Summary
+
+This step cleans the raw sequencing data by removing low-quality bases and unreliable reads, making the data ready for accurate alignment and downstream analysis.
+
+Low-quality bases are removed from both ends of reads.
+Reads below Q25 or shorter than 40 bases are discarded.
+Summary reports are generated in HTML and JSON format.
+
+---
+
+## 🔍 QC After Trimming
 
 ```bash
 fastqc ERR5386380_1.trimmed.fastq.gz ERR5386380_2.trimmed.fastq.gz
 ```
 
-**Explanation:**
-Validates improvement in sequencing quality after trimming.
+Confirms improvement in sequence quality after filtering.
 
 ---
 
-## 📊 Step 7: Aggregate Reports (MultiQC)
+## 📊 Summary Report
 
 ```bash
 multiqc .
 ```
 
-**Explanation:**
-Combines all QC outputs into a single report:
-
-* compares before vs after trimming
-* provides an overall quality summary
+Aggregates all QC outputs into a single report for easy comparison of pre- and post-trimming results.
 
 ---
 
 ## 📈 Observations
 
 * Read 2 showed lower quality compared to Read 1
-* Quality improved significantly after trimming
+* Quality improved after trimming
 * Approximately 1% of reads were removed
 * GC content remained consistent with expected organism profile
 
 ---
 
-## 📁 Output Summary
+## 📁 Output Files
 
-| File                  | Description                                 |
-| --------------------- | ------------------------------------------- |
-| `*_fastqc.html`       | Quality reports (before and after trimming) |
-| `fastp.html`          | Detailed trimming report                    |
-| `multiqc_report.html` | Combined QC summary                         |
+* FastQC reports (`*_fastqc.html`)
+* fastp report (`fastp.html`)
+* MultiQC report (`multiqc_report.html`)
 
 ---
 
 ## 📌 Conclusion
 
-The sequencing data was successfully processed to remove low-quality bases and artifacts.
-The cleaned reads are now suitable for downstream analysis such as:
-
-* alignment
-* variant calling
-* antimicrobial resistance analysis
+The dataset was successfully cleaned and validated.
+The processed reads are suitable for downstream analysis such as alignment and variant calling.
 
 ---
