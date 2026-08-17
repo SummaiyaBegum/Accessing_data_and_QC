@@ -1,4 +1,4 @@
-#🧬 Accessing Data and Quality Control
+<h1 align="center">🧬 Accessing Data and Quality Control</h1>
 
 ## 📌 Objective
 
@@ -8,7 +8,7 @@ Perform quality assessment and preprocessing of Illumina paired-end sequencing d
 
 ## 🖥️ Working Environment
 
-All commands are executed in **Ubuntu (WSL)** because bioinformatics tools are designed for Linux systems and work reliably with large sequencing datasets.
+All commands are executed in **Ubuntu (WSL)** because Linux is widely used for bioinformatics workflows and provides a convenient command-line environment for working with sequencing data.
 
 Basic commands used:
 
@@ -75,8 +75,7 @@ FastQC analyzes raw reads for base quality, GC content, duplication levels, and 
 ```bash
 explorer.exe .
 ```
-
-Opens the current directory to access HTML reports in a browser.
+Opens the directory in Windows File Explorer. You're then using File Explorer to access the HTML files.
 
 ---
 
@@ -101,7 +100,7 @@ fastp --in1 ERR5386380_1.fastq.gz --in2 ERR5386380_2.fastq.gz --out1 ERR5386380_
 
 * `--out2 ERR5386380_2.trimmed.fastq.gz`
   Output file for cleaned reverse reads.
-  These trimmed files will be used for alignment.
+  These processed files will be used as input for downstream analysis, such as alignment.
 
 * `--cut_front`
   Enables quality-based cutting from the beginning of the read.
@@ -128,11 +127,11 @@ fastp --in1 ERR5386380_1.fastq.gz --in2 ERR5386380_2.fastq.gz --out1 ERR5386380_
 
 ### 🧠 Summary
 
-This step cleans the raw sequencing data by removing low-quality bases and unreliable reads, making the data ready for accurate alignment and downstream analysis.
+This step processes the raw sequencing data using quality-based cutting and length filtering.
 
-Low-quality bases are removed from both ends of reads.
-The quality-based cutting settings remove low-quality regions, while `--length_required 40` filters out reads that are shorter than 40 bases after processing.
-Summary reports are generated in HTML and JSON format.
+The quality-based cutting settings allow low-quality regions at the front and end of reads to be removed, while `--length_required 40` filters out reads shorter than 40 bases after processing.
+
+fastp also generates HTML and JSON reports summarizing the preprocessing.
 
 ---
 
@@ -167,7 +166,9 @@ Aggregates all QC outputs into a single report for easy comparison of pre- and p
 ## 📁 Output Files
 
 * FastQC reports (`*_fastqc.html`)
+* FastQC result archives (`*_fastqc.zip`)
 * fastp report (`fastp.html`)
+* fastp JSON report (`fastp.json`)
 * MultiQC report (`multiqc_report.html`)
 
 ---
