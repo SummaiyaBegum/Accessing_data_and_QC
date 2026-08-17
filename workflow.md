@@ -4,7 +4,6 @@
 
 Perform quality assessment and preprocessing of Illumina paired-end sequencing data in a reproducible Linux (Ubuntu) environment.
 
----
 
 ## 🖥️ Working Environment
 
@@ -18,7 +17,6 @@ Basic commands used:
 * `cd` → moves between folders
 * `wget` → downloads data
 
----
 
 ## 📁 Create Working Directory
 
@@ -32,7 +30,6 @@ ls
 A dedicated folder is created and entered to keep all analysis files organized.
 `pwd` confirms the current location and `ls` verifies contents.'
 
----
 
 ## ⚙️ Tool Installation
 
@@ -46,7 +43,6 @@ sudo apt install fastqc fastp multiqc -y
 `apt install` installs FastQC, fastp, and MultiQC.
 `-y` automatically confirms installation.
 
----
 
 ## ⬇️ Download Raw Data
 
@@ -60,8 +56,6 @@ Paired-end sequencing reads are downloaded from ENA.
 `_1` represents forward reads and `_2` represents reverse reads.
 `ls` confirms successful download.
 
----
-
 ## 🔍 Initial Quality Check
 
 ```bash
@@ -70,7 +64,6 @@ fastqc ERR5386380_1.fastq.gz ERR5386380_2.fastq.gz
 
 FastQC analyzes raw reads for base quality, GC content, duplication levels, and potential adapter contamination.
 
----
 
 ## 📊 View Reports
 
@@ -79,13 +72,14 @@ explorer.exe .
 ```
 Opens the directory in Windows File Explorer. You're then using File Explorer to access the HTML files.
 
----
 
 ## ✂️ Trimming and Filtering
 
 ```bash
 fastp --in1 ERR5386380_1.fastq.gz --in2 ERR5386380_2.fastq.gz --out1 ERR5386380_1.trimmed.fastq.gz --out2 ERR5386380_2.trimmed.fastq.gz --cut_front --cut_tail --cut_mean_quality 25 --length_required 40 --html fastp.html --json fastp.json
+
 ```
+
 ## 🔧 fastp Command Breakdown
 * `fastp`
   Runs the trimming and quality filtering tool.
@@ -124,8 +118,7 @@ fastp --in1 ERR5386380_1.fastq.gz --in2 ERR5386380_2.fastq.gz --out1 ERR5386380_
 
 * `--json fastp.json`
   Creates a structured report for further analysis or pipeline use.
-
----
+  
 
 ### 🧠 Summary
 
@@ -135,7 +128,6 @@ The quality-based cutting settings allow low-quality regions at the front and en
 
 fastp also generates HTML and JSON reports summarizing the preprocessing.
 
----
 
 ## 🔍 QC After Trimming
 
@@ -145,7 +137,6 @@ fastqc ERR5386380_1.trimmed.fastq.gz ERR5386380_2.trimmed.fastq.gz
 
 The trimmed reads were assessed again with FastQC so that the results could be compared with the initial QC.
 
----
 
 ## 📊 Summary Report
 
@@ -155,7 +146,6 @@ multiqc .
 
 Aggregates all QC outputs into a single report for easy comparison of pre- and post-trimming results.
 
----
 
 ## 📈 Observations
 
@@ -163,7 +153,7 @@ Aggregates all QC outputs into a single report for easy comparison of pre- and p
 - Quality improved after trimming.
 - Approximately 1% of reads were removed during processing.
 - GC content remained relatively consistent before and after processing.
----
+  
 
 ## 📁 Output Files
 
@@ -173,7 +163,7 @@ Aggregates all QC outputs into a single report for easy comparison of pre- and p
 * fastp JSON report (`fastp.json`)
 * MultiQC report (`multiqc_report.html`)
 
----
+
 
 ## 📌 Conclusion
 
