@@ -28,7 +28,7 @@ sudo apt install fastqc fastp multiqc -y
 ```
 
 `sudo` runs commands with administrative privileges.
-`apt update` refreshes the package list so the system knows the latest available software versions.
+`apt update` refreshes the local package index so Ubuntu knows which packages and versions are available from its configured repositories.
 `apt install` installs FastQC, fastp, and MultiQC.
 `-y` automatically confirms installation.
 
@@ -106,15 +106,15 @@ fastp --in1 ERR5386380_1.fastq.gz --in2 ERR5386380_2.fastq.gz --out1 ERR5386380_
   These trimmed files will be used for alignment.
 
 * `--cut_front`
-  Removes low-quality bases from the beginning of each read.
+  Enables quality-based cutting from the beginning of the read.
 
 * `--cut_tail`
-  Removes low-quality bases from the end of each read.
-  Sequencing quality is usually lower at the ends, so trimming improves accuracy.
+  Enables quality-based cutting from the end of the read.
 
 * `--cut_mean_quality 25`
-  Trims regions where average quality drops below Q25.
-  Q25 means high-confidence bases (~99.7% accuracy).
+  Sets the mean quality threshold used during quality-based cutting.
+  In this workflow, fastp uses Q25 as the threshold when deciding where to cut low-quality regions.
+  Q25 corresponds to approximately 99.68% expected base-call accuracy.
 
 * `--length_required 40`
   Removes reads shorter than 40 bases after trimming.
@@ -133,7 +133,7 @@ fastp --in1 ERR5386380_1.fastq.gz --in2 ERR5386380_2.fastq.gz --out1 ERR5386380_
 This step cleans the raw sequencing data by removing low-quality bases and unreliable reads, making the data ready for accurate alignment and downstream analysis.
 
 Low-quality bases are removed from both ends of reads.
-Reads below Q25 or shorter than 40 bases are discarded.
+The quality-based cutting settings remove low-quality regions, while `--length_required 40` filters out reads that are shorter than 40 bases after processing.
 Summary reports are generated in HTML and JSON format.
 
 ---
@@ -144,7 +144,7 @@ Summary reports are generated in HTML and JSON format.
 fastqc ERR5386380_1.trimmed.fastq.gz ERR5386380_2.trimmed.fastq.gz
 ```
 
-Confirms improvement in sequence quality after filtering.
+The trimmed reads were assessed again with FastQC so that the results could be compared with the initial QC.
 
 ---
 
