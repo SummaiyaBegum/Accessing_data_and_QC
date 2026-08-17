@@ -120,7 +120,7 @@ fastp --in1 ERR5386380_1.fastq.gz --in2 ERR5386380_2.fastq.gz --out1 ERR5386380_
   Creates a structured report for further analysis or pipeline use.
   
 
-### 🧠 Summary
+## 🧠 Summary
 
 This step processes the raw sequencing data using quality-based cutting and length filtering.
 
