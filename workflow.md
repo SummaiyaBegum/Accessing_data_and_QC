@@ -20,20 +20,6 @@ Basic commands used:
 
 ---
 
-## ⚙️ Tool Installation
-
-```bash
-sudo apt update
-sudo apt install fastqc fastp multiqc -y
-```
-
-`sudo` runs commands with administrative privileges.
-`apt update` refreshes the local package index so Ubuntu knows which packages and versions are available from its configured repositories.
-`apt install` installs FastQC, fastp, and MultiQC.
-`-y` automatically confirms installation.
-
----
-
 ## 📁 Create Working Directory
 
 ```bash
@@ -45,7 +31,19 @@ ls
 
 A dedicated folder is created and entered to keep all analysis files organized.
 `pwd` confirms the current location and `ls` verifies contents.
+---
 
+## ⚙️ Tool Installation
+
+```bash
+sudo apt update
+sudo apt install fastqc fastp multiqc -y
+```
+
+`sudo` runs commands with administrative privileges.
+`apt update` refreshes the local package index so Ubuntu knows which packages and versions are available from its configured repositories.
+`apt install` installs FastQC, fastp, and MultiQC.
+`-y` automatically confirms installation.
 ---
 
 ## ⬇️ Download Raw Data
@@ -160,11 +158,10 @@ Aggregates all QC outputs into a single report for easy comparison of pre- and p
 
 ## 📈 Observations
 
-* Read 2 showed lower quality compared to Read 1
-* Quality improved after trimming
-* Approximately 1% of reads were removed
-* GC content remained consistent with expected organism profile
-
+- Read 2 showed lower quality compared to Read 1.
+- Quality improved after trimming.
+- Approximately 1% of reads were removed during processing.
+- GC content remained relatively consistent before and after processing.
 ---
 
 ## 📁 Output Files
@@ -177,7 +174,7 @@ Aggregates all QC outputs into a single report for easy comparison of pre- and p
 
 ## 📌 Conclusion
 
-The dataset was successfully cleaned and validated.
-The processed reads are suitable for downstream analysis such as alignment and variant calling.
+The raw Illumina reads were assessed using FastQC, processed using fastp, and assessed again after trimming. MultiQC was then used to summarize the QC results.
 
+Based on the QC results from this dataset, the processed reads can be taken forward to the next stage of the workflow, where I will explore alignment and variant calling.
 ---
