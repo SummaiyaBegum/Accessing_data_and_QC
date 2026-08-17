@@ -30,7 +30,8 @@ ls
 ```
 
 A dedicated folder is created and entered to keep all analysis files organized.
-`pwd` confirms the current location and `ls` verifies contents.
+`pwd` confirms the current location and `ls` verifies contents.'
+
 ---
 
 ## ⚙️ Tool Installation
@@ -44,6 +45,7 @@ sudo apt install fastqc fastp multiqc -y
 `apt update` refreshes the local package index so Ubuntu knows which packages and versions are available from its configured repositories.
 `apt install` installs FastQC, fastp, and MultiQC.
 `-y` automatically confirms installation.
+
 ---
 
 ## ⬇️ Download Raw Data
@@ -178,4 +180,5 @@ Aggregates all QC outputs into a single report for easy comparison of pre- and p
 The raw Illumina reads were assessed using FastQC, processed using fastp, and assessed again after trimming. MultiQC was then used to summarize the QC results.
 
 Based on the QC results from this dataset, the processed reads can be taken forward to the next stage of the workflow, where I will explore alignment and variant calling.
+
 ---
