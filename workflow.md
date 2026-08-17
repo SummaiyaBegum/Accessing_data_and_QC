@@ -1,4 +1,4 @@
-# 🧬 Detailed Workflow: NGS Quality Control Pipeline
+# 🧬 Accessing Data and Quality Control
 
 ## 📌 Objective
 
